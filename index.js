@@ -3,6 +3,9 @@ const app = express()
 
 app.use(express.json())
 
+var morgan = require('morgan')
+app.use(morgan('tiny'))
+
 let persons = [
     {
         "name": "Ada Lovelace",
