@@ -1,10 +1,14 @@
+require('dotenv').config() // enables use of .env file
+
 const express = require('express')
 const app = express()
 const cors = require('cors')
+const Person = require('./models/person') // MongoDB model
 
 app.use(express.json())
 
 var morgan = require('morgan')
+const note = require('../notes-backend/models/note')
 
 morgan.token('body', function getData(req) {
     return JSON.stringify(req.body)
@@ -48,18 +52,15 @@ let persons = [
 ]
 
 app.get('/api/persons', (request, response) => {
-    response.json(persons)
+    Person.find({}).then(persons => {
+        response.json(persons)
+    })
 })
 
 app.get('/api/persons/:id', (request, response) => {
-    const id = Number(request.params.id)
-    const person = persons.find(person => person.id === id)
-    
-    if (person) {
+    Person.findById(request.params.id).then(person => {
         response.json(person)
-    } else {
-        response.status(404).end()
-    }
+    })
 })
 
 app.delete('/api/persons/:id', (request, response) => {
@@ -87,15 +88,15 @@ app.post('/api/persons', (request, response) => {
         })
     }
     
-    const person = {
+    const person = new Person({
         name: body.name,
         number: body.number,
         id: generateId()
-    }
+    })
 
-    persons = persons.concat(person)
-
-    response.json(person)
+    person.save().then(savedPerson => {
+        response.json(savedPerson)
+    })
 
 })
 
