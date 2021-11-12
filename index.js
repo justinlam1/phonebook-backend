@@ -26,39 +26,6 @@ const errorHandler = (error, request, response, next) => {
     next(error)
 }
 
-let persons = [
-    {
-        "name": "Ada Lovelace",
-        "number": "39-44-5323523",
-        "id": 2
-    },
-    {
-        "name": "Dan Abramov",
-        "number": "12-43-234345",
-        "id": 3
-    },
-    {
-        "name": "Mary Poppendieck",
-        "number": "39-23-6423122",
-        "id": 4
-    },
-    {
-        "name": "test",
-        "number": "21",
-        "id": 6
-    },
-    {
-        "name": "lol",
-        "number": "6",
-        "id": 11
-    },
-    {
-        "name": "lollipop",
-        "number": "123",
-        "id": 12
-    }
-]
-
 app.get('/api/persons', (request, response) => {
     Person.find({}).then(persons => {
         response.json(persons)
@@ -138,10 +105,13 @@ app.put('/api/persons/:id', (request, response, next) => {
 })
 
 app.get('/info', (request, response) => {
-    response.send(`
-    <p>Phonebook has info for ${persons.length} people.</p>
-    <p>${Date()}</p>
-    `)
+    Person.find({}).then(persons => {
+        response.send(`
+        <p>Phonebook has info for ${persons.length} people.</p>
+        <p>${Date()}</p>
+        `)
+    })
+    
 })
 
 app.use(errorHandler)
