@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const uniqueValidator = require('mongoose-unique-validator')
 
 
 const password = process.argv[2]
@@ -10,9 +11,18 @@ const url = `mongodb+srv://fso:${password}@cluster0.qqesy.mongodb.net/phonebook-
 mongoose.connect(url)
 
 const personSchema = new mongoose.Schema({
-    name: String,
-    number: String
+    name: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    number: {
+        type: String,
+        required: true,
+    }
 })
+
+personSchema.plugin(uniqueValidator) // apply the uniqueValidator plugin to personSchema
 
 const Person = mongoose.model('Person', personSchema)
 
