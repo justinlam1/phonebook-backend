@@ -26,14 +26,14 @@ personSchema.plugin(uniqueValidator) // apply the uniqueValidator plugin to pers
 
 const Person = mongoose.model('Person', personSchema)
 
-if (process.argv.length == 3) {
+if (process.argv.length === 3) {
     Person
         .find({})
         .then(result => {
             result.forEach(person => {
-                console.log(person);
+                console.log(person)
             })
-            console.log('Displaying entries');
+            console.log('Displaying entries')
             mongoose.connection.close()
             process.exit(0)
         })
@@ -43,8 +43,8 @@ if (process.argv.length == 3) {
         number: newNumber
     })
 
-    person.save().then(result => {
-        console.log('Person saved!');
+    person.save().then(() => {
+        console.log('Person saved!')
         mongoose.connection.close()
     })
 }
