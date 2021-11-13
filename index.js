@@ -8,7 +8,6 @@ const Person = require('./models/person') // MongoDB model
 app.use(express.json())
 
 var morgan = require('morgan')
-const note = require('../notes-backend/models/note')
 
 morgan.token('body', function getData(req) {
     return JSON.stringify(req.body)
